@@ -8,11 +8,11 @@ namespace FootballMatchStatEventStore.Domain
 {
     public sealed class Match : DomainBase
     {
-        public string HomeTeam { get; private set; }
-        public string AwayTeam { get; private set; }
-        public ICollection<string> HomeTeamScorers { get; private set; }
-        public ICollection<string> AwayTeamScorers { get; private set; }
-        public MatchStatus Status { get; private set; }
+        private string HomeTeam { get; set; }
+        private string AwayTeam { get; set; }
+        private ICollection<string> HomeTeamScorers { get; set; }
+        private ICollection<string> AwayTeamScorers { get; set; }
+        private MatchStatus Status { get; set; }
 
         public string Result
         {
@@ -41,6 +41,25 @@ namespace FootballMatchStatEventStore.Domain
             AwayTeamScorers = new Collection<string>();
             Status = MatchStatus.Declared;
         }
+
+        #region Query
+
+        public MatchStatus GetMatchStatus()
+        {
+            return Status;
+        }
+
+        public int GoalsPerHomePlayer(string name)
+        {
+            return HomeTeamScorers.Count(p => p == name);
+        }
+
+        public int GoalsPerAwayPlayer(string name)
+        {
+            return AwayTeamScorers.Count(p => p == name);
+        }
+
+        #endregion
 
         #region Mutators
 

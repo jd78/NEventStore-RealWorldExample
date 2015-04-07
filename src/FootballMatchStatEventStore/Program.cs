@@ -34,10 +34,14 @@ namespace FootballMatchStatEventStore
 
             match.UpdateMatchStatus(MatchStatus.Ended);
 
-            Console.Write(match.Status);
+            Console.Write(match.GetMatchStatus());
             Console.WriteLine("Final score {0}", match.Result);
 
             matchService.Update(match);
+
+            Console.WriteLine("***Some stats***");
+            Console.WriteLine("Higuain scored {0} goal", match.GoalsPerHomePlayer("Higuain"));
+            Console.WriteLine("Totti scored {0} goal", match.GoalsPerAwayPlayer("Totti"));
 
             Console.ReadLine();
         }
