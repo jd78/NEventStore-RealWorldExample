@@ -53,12 +53,14 @@
     <Compile Include="Contracts\HomeGoalScored.cs" />
     <Compile Include="Domain\DomainBase.cs" />
     <Compile Include="Domain\Match.cs" />
+    <Compile Include="Domain\MatchMemento.cs" />
     <Compile Include="Domain\MatchStatus.cs" />
     <Compile Include="Contracts\IEvent.cs" />
     <Compile Include="Contracts\MatchDeclared.cs" />
     <Compile Include="Contracts\MatchStatusUpdated.cs" />
     <Compile Include="Events\MatchDeclaredEventHandler.cs" />
     <Compile Include="Events\MatchStatusUpdatedEventHandler.cs" />
+    <Compile Include="Ex\StringEx.cs" />
     <Compile Include="Infrastructure\AggregateFactory.cs" />
     <Compile Include="Infrastructure\CommitDispatcher.cs" />
     <Compile Include="Infrastructure\CommitDispatchingPipelineHook.cs" />
@@ -67,6 +69,7 @@
     <Compile Include="IocBootstrapper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\EventStoreRepository.cs" />
     <Compile Include="Services\IMatchService.cs" />
     <Compile Include="Services\MatchService.cs" />
   </ItemGroup>

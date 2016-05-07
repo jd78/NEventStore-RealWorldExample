@@ -2,23 +2,20 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using CommonDomain;
 using FootballMatchStatEventStore.Contracts;
+using Newtonsoft.Json;
 
 namespace FootballMatchStatEventStore.Domain
 {
     public sealed class Match : DomainBase
     {
-        private string HomeTeam { get; set; }
-        private string AwayTeam { get; set; }
-        private ICollection<string> HomeTeamScorers { get; set; }
-        private ICollection<string> AwayTeamScorers { get; set; }
-        private MatchStatus Status { get; set; }
-
-        public string Result
-        {
-            get { return string.Format("{0} - {1}", HomeTeamScorers.Count(), AwayTeamScorers.Count()); }
-        }
-
+        private string _homeTeam;
+        private string _awayTeam;
+        private readonly ICollection<string> _homeTeamScorers;
+        private readonly ICollection<string> _awayTeamScorers;
+        private MatchStatus _status;
+        
         public static Match CreateMatch(string homeTeam, string awayTeam)
         {
             return new Match(Guid.NewGuid(), homeTeam, awayTeam);
@@ -37,26 +34,65 @@ namespace FootballMatchStatEventStore.Domain
         private Match(Guid id)
         {
             Id = id;
-            HomeTeamScorers = new Collection<string>();
-            AwayTeamScorers = new Collection<string>();
-            Status = MatchStatus.Declared;
+            _homeTeamScorers = new Collection<string>();
+            _awayTeamScorers = new Collection<string>();
+            _status = MatchStatus.Declared;
+        }
+        
+        public Match(IMemento matchMemento)
+        {
+            var snapshot = matchMemento as MatchMemento;
+            if (snapshot == null)
+                throw new ApplicationException("matchMemento parameter mismatch");
+            
+            Id = snapshot.Id;
+            _homeTeamScorers = snapshot.HomeTeamScorers;
+            _awayTeamScorers = snapshot.AwayTeamScorers;
+            _status = snapshot.Status;
+            _awayTeam = snapshot.AwayTeam;
+            _homeTeam = snapshot.HomeTeam;
+            Version = matchMemento.Version;
         }
 
         #region Query
 
+        public string Result
+        {
+            get { return string.Format("{0} - {1}", _homeTeamScorers.Count(), _awayTeamScorers.Count()); }
+        }
+
+        public string GetHomeTeam()
+        {
+            return _homeTeam;
+        }
+
+        public string GetAwayTeam()
+        {
+            return _awayTeam;
+        }
+
+        public IEnumerable<string> GetHomeTeamScorers()
+        {
+            return _homeTeamScorers;
+        }
+        public IEnumerable<string> GetAwayTeamScorers()
+        {
+            return _awayTeamScorers;
+        }
+
         public MatchStatus GetMatchStatus()
         {
-            return Status;
+            return _status;
         }
 
         public int GoalsPerHomePlayer(string name)
         {
-            return HomeTeamScorers.Count(p => p == name);
+            return _homeTeamScorers.Count(p => p == name);
         }
 
         public int GoalsPerAwayPlayer(string name)
         {
-            return AwayTeamScorers.Count(p => p == name);
+            return _awayTeamScorers.Count(p => p == name);
         }
 
         #endregion
@@ -96,23 +132,23 @@ namespace FootballMatchStatEventStore.Domain
 
         private void Apply(MatchStatusUpdated status)
         {
-            Status = status.Status;
+            _status = status.Status;
         }
 
         private void Apply(MatchDeclared match)
         {
-            HomeTeam = match.HomeTeam;
-            AwayTeam = match.AwayTeam;
+            _homeTeam = match.HomeTeam;
+            _awayTeam = match.AwayTeam;
         }
 
         private void Apply(HomeGoalScored goal)
         {
-            HomeTeamScorers.Add(goal.Scorer);
+            _homeTeamScorers.Add(goal.Scorer);
         }
 
         private void Apply(AwayGoalScored goal)
         {
-            AwayTeamScorers.Add(goal.Scorer);
+            _awayTeamScorers.Add(goal.Scorer);
         }
 
         #endregion

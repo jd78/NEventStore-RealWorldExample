@@ -3,13 +3,13 @@ using Autofac.Builder;
 using CommonDomain;
 using CommonDomain.Core;
 using CommonDomain.Persistence;
-using CommonDomain.Persistence.EventStore;
 using FootballMatchStatEventStore.Contracts;
 using FootballMatchStatEventStore.Events;
 using FootballMatchStatEventStore.Infrastructure;
 using FootballMatchStatEventStore.Services;
 using NEventStore;
 using NEventStore.Persistence.Sql.SqlDialects;
+using EventStoreRepository = FootballMatchStatEventStore.Services.EventStoreRepository;
 
 namespace FootballMatchStatEventStore
 {
@@ -40,7 +40,7 @@ namespace FootballMatchStatEventStore
 
             Builder.RegisterEventHandler<MatchDeclaredEventHandler, MatchDeclared>();
             Builder.RegisterEventHandler<MatchStatusUpdatedEventHandler, MatchStatusUpdated>();
-
+            
             Container = Builder.Build();
         }
 
@@ -49,9 +49,9 @@ namespace FootballMatchStatEventStore
             var hook = ctx.Resolve<IPipelineHook>();
             var store = Wireup.Init()
                               .HookIntoPipelineUsing(hook)
-                              //.UsingSqlPersistence("FootballEventStore")
-                              //.WithDialect(new MsSqlDialect())
-                              .UsingInMemoryPersistence()
+                              .UsingSqlPersistence("FootballEventStore")
+                              .WithDialect(new MsSqlDialect())
+                              //.UsingInMemoryPersistence()
                               .InitializeStorageEngine()
                               .UsingJsonSerialization()
                               .Build();
