@@ -3,13 +3,13 @@ using Autofac.Builder;
 using CommonDomain;
 using CommonDomain.Core;
 using CommonDomain.Persistence;
+using CommonDomain.Persistence.EventStore;
 using FootballMatchStatEventStore.Contracts;
 using FootballMatchStatEventStore.Events;
 using FootballMatchStatEventStore.Infrastructure;
 using FootballMatchStatEventStore.Services;
 using NEventStore;
 using NEventStore.Persistence.Sql.SqlDialects;
-using EventStoreRepository = FootballMatchStatEventStore.Services.EventStoreRepository;
 
 namespace FootballMatchStatEventStore
 {
@@ -24,7 +24,7 @@ namespace FootballMatchStatEventStore
             Builder.Register(CreateNEventStore)
                 .As<IStoreEvents>().SingleInstance();
             Builder.RegisterType<EventStoreRepository>()
-                .As<IRepository>();
+                .As<IRepository>().SingleInstance();
             Builder.RegisterType<ConflictDetector>()
                 .As<IDetectConflicts>()
                 .SingleInstance();
@@ -35,6 +35,7 @@ namespace FootballMatchStatEventStore
                 .As<IPipelineHook>()
                 .SingleInstance();
             Builder.RegisterType<CommitDispatcher>().As<ICommitDispatcher>().SingleInstance();
+            Builder.RegisterType<Settings>().AsSelf().SingleInstance();
 
             Builder.RegisterType<MatchService>().As<IMatchService>().SingleInstance();
 

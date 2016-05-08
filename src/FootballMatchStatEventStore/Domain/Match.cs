@@ -4,18 +4,30 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using CommonDomain;
 using FootballMatchStatEventStore.Contracts;
-using Newtonsoft.Json;
 
 namespace FootballMatchStatEventStore.Domain
 {
-    public sealed class Match : DomainBase
+    public sealed class Match : DomainBase, ICloneable
     {
         private string _homeTeam;
         private string _awayTeam;
-        private readonly ICollection<string> _homeTeamScorers;
-        private readonly ICollection<string> _awayTeamScorers;
+        private ICollection<string> _homeTeamScorers;
+        private ICollection<string> _awayTeamScorers;
         private MatchStatus _status;
-        
+
+        public object Clone()
+        {
+            var clone = new Match(Id, _homeTeam, _awayTeam)
+            {
+                _awayTeamScorers = _awayTeamScorers.Select(p => p).ToList(),
+                _homeTeamScorers = _homeTeamScorers.Select(p => p).ToList(),
+                _status = _status,
+                Id = Id,
+                Version = Version
+            };
+            return clone;
+        }
+
         public static Match CreateMatch(string homeTeam, string awayTeam)
         {
             return new Match(Guid.NewGuid(), homeTeam, awayTeam);

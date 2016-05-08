@@ -1,4 +1,5 @@
 ﻿using System;
+using CommonDomain;
 using FootballMatchStatEventStore.Domain;
 
 namespace FootballMatchStatEventStore.Services
@@ -7,6 +8,6 @@ namespace FootballMatchStatEventStore.Services
     {
         Match Create(string homeTeam, string awayTeam);
         Match Read(Guid id);
-        void Update(Match match);
+        void Update(IAggregate match);
     }
 }

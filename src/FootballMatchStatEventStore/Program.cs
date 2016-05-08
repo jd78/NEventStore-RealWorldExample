@@ -10,7 +10,12 @@ namespace FootballMatchStatEventStore
         private static void Main()
         {
             var matchService = IocBootstrapper.Container.Resolve<IMatchService>();
-            
+            Create(matchService);
+            Console.ReadLine();
+        }
+
+        public static void Create(IMatchService matchService)
+        {
             var match = matchService.Create("Napoli", "Roma");
 
             match.UpdateMatchStatus(MatchStatus.FirstHalf);
@@ -42,8 +47,6 @@ namespace FootballMatchStatEventStore
             Console.WriteLine("***Some stats***");
             Console.WriteLine("Higuain scored {0} goal", match.GoalsPerHomePlayer("Higuain"));
             Console.WriteLine("Totti scored {0} goal", match.GoalsPerAwayPlayer("Totti"));
-
-            Console.ReadLine();
         }
     }
 }
