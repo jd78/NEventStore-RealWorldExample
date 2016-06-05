@@ -1,6 +1,5 @@
 ﻿using System;
 using FootballMatchStatEventStore.Contracts;
-using FootballMatchStatEventStore.Domain;
 using FootballMatchStatEventStore.Infrastructure;
 
 namespace FootballMatchStatEventStore.Events

@@ -50,9 +50,9 @@ namespace FootballMatchStatEventStore
             var hook = ctx.Resolve<IPipelineHook>();
             var store = Wireup.Init()
                               .HookIntoPipelineUsing(hook)
-                              .UsingSqlPersistence("FootballEventStore")
-                              .WithDialect(new MsSqlDialect())
-                              //.UsingInMemoryPersistence()
+                              //.UsingSqlPersistence("FootballEventStore")
+                              //.WithDialect(new MsSqlDialect())
+                              .UsingInMemoryPersistence()
                               .InitializeStorageEngine()
                               .UsingJsonSerialization()
                               .Build();

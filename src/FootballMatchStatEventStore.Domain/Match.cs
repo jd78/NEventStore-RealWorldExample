@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using CommonDomain;
+using FootballMatchStatEventStore.Common;
 using FootballMatchStatEventStore.Contracts;
 
 namespace FootballMatchStatEventStore.Domain
@@ -115,7 +116,7 @@ namespace FootballMatchStatEventStore.Domain
         {
             var @event = new MatchStatusUpdated
             {
-                Status = status
+                Status = EnumEx.MapByStringValue<MatchStatus, Contracts.MatchStatus>(status)
             };
             RaiseDomainEvent(@event);
         }
@@ -144,7 +145,7 @@ namespace FootballMatchStatEventStore.Domain
 
         private void Apply(MatchStatusUpdated status)
         {
-            _status = status.Status;
+            _status = EnumEx.MapByStringValue<Contracts.MatchStatus, MatchStatus>(status.Status);
         }
 
         private void Apply(MatchDeclared match)

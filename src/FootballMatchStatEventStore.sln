@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FootballMatchStatEventStore", "FootballMatchStatEventStore\FootballMatchStatEventStore.csproj", "{6F2CAD93-F72A-4AF1-8276-EF2E7A63BC70}"
 EndProject
@@ -11,6 +11,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{F301BD
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FootballMatchStatEventStore.Domain", "FootballMatchStatEventStore.Domain\FootballMatchStatEventStore.Domain.csproj", "{B555E7EF-F248-4E54-B456-4C0676EE3F09}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FootballMatchStatEventStore.Contracts", "FootballMatchStatEventStore.Contracts\FootballMatchStatEventStore.Contracts.csproj", "{E2CBCC80-4159-4200-BED6-6416BCC5137E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FootballMatchStatEventStore.Common", "FootballMatchStatEventStore.Common\FootballMatchStatEventStore.Common.csproj", "{E27EFE32-FCB8-4920-9FED-2B3209ADE395}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,6 +28,18 @@ Global
 		{6F2CAD93-F72A-4AF1-8276-EF2E7A63BC70}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F2CAD93-F72A-4AF1-8276-EF2E7A63BC70}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F2CAD93-F72A-4AF1-8276-EF2E7A63BC70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B555E7EF-F248-4E54-B456-4C0676EE3F09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B555E7EF-F248-4E54-B456-4C0676EE3F09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B555E7EF-F248-4E54-B456-4C0676EE3F09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B555E7EF-F248-4E54-B456-4C0676EE3F09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2CBCC80-4159-4200-BED6-6416BCC5137E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2CBCC80-4159-4200-BED6-6416BCC5137E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2CBCC80-4159-4200-BED6-6416BCC5137E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2CBCC80-4159-4200-BED6-6416BCC5137E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E27EFE32-FCB8-4920-9FED-2B3209ADE395}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E27EFE32-FCB8-4920-9FED-2B3209ADE395}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E27EFE32-FCB8-4920-9FED-2B3209ADE395}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E27EFE32-FCB8-4920-9FED-2B3209ADE395}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
