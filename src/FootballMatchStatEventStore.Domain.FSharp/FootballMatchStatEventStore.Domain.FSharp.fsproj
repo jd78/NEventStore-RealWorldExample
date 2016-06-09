@@ -54,6 +54,11 @@
     <Compile Include="DomainBase.fs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FootballMatchStatEventStore.Common\FootballMatchStatEventStore.Common.csproj">
+      <Name>FootballMatchStatEventStore.Common</Name>
+      <Project>{e27efe32-fcb8-4920-9fed-2b3209ade395}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\FootballMatchStatEventStore.Contracts\FootballMatchStatEventStore.Contracts.csproj">
       <Name>FootballMatchStatEventStore.Contracts</Name>
       <Project>{e2cbcc80-4159-4200-bed6-6416bcc5137e}</Project>

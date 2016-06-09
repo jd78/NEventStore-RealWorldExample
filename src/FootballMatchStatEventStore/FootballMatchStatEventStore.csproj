@@ -73,6 +73,10 @@
       <Project>{E2CBCC80-4159-4200-BED6-6416BCC5137E}</Project>
       <Name>FootballMatchStatEventStore.Contracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FootballMatchStatEventStore.Domain.FSharp\FootballMatchStatEventStore.Domain.FSharp.fsproj">
+      <Project>{a98f2bb4-865e-4944-a5ad-925e6c27cb75}</Project>
+      <Name>FootballMatchStatEventStore.Domain.FSharp</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FootballMatchStatEventStore.Domain\FootballMatchStatEventStore.Domain.csproj">
       <Project>{b555e7ef-f248-4e54-b456-4c0676ee3f09}</Project>
       <Name>FootballMatchStatEventStore.Domain</Name>

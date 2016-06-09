@@ -2,8 +2,9 @@
 
 open System
 open FootballMatchStatEventStore.Contracts
-open FootballMatchStatEventStore.Contracts
+open FootballMatchStatEventStore.Common
 open CommonDomain.Core
+
 
 [<AbstractClass>]
 type DomainBase() =
@@ -15,19 +16,19 @@ type DomainBase() =
     this.RaiseEvent evt
 
 type MatchStatus =
-    |Declared
-    |FirstHalf
-    |HalfTime
-    |SecondHalf
-    |Ended
+    |Declared = 0
+    |FirstHalf = 1
+    |HalfTime = 2
+    |SecondHalf = 3
+    |Ended = 4
 
 type Match = 
     inherit DomainBase
     val Id:Guid
     val mutable private _homeTeam:string 
     val mutable private _awayTeam:string 
-    val mutable private _homeTeamScorers: List<string>
-    val mutable private _awayTeamScorers: List<string>
+    val mutable private _homeTeamScorers: seq<string>
+    val mutable private _awayTeamScorers: seq<string>
     val mutable private _matchStatus:MatchStatus
 
     private new (homeTeam, awayTeam) = { 
@@ -42,15 +43,37 @@ type Match =
 
     static member CreateMatch homeTeam awayTeam =
         Match(homeTeam, awayTeam)
-
-    member this.Result = sprintf "%d - %d" this._homeTeamScorers.Length this._awayTeamScorers.Length
+    
+    //Queries
+    member this.Result = sprintf "%d - %d" (this._homeTeamScorers |> Seq.length) (this._awayTeamScorers |> Seq.length)
     member this.GetHomeTeam = this._homeTeam
     member this.GetAwayTeam = this._awayTeam
-    member this.GetHomeTeamScorers = this._homeTeamScorers |> List.toSeq
-    member this.GetAwayTeamScorers = this._awayTeamScorers |> List.toSeq
+    member this.GetHomeTeamScorers = this._homeTeamScorers
+    member this.GetAwayTeamScorers = this._awayTeamScorers
     member this.GetMatchStatus = this._matchStatus
-    member this.GoalsPerHomePlayer name = this._homeTeamScorers |> List.filter (fun f -> f = name) |> List.length
-    member this.GoalsPerAwayPlayer name = this._awayTeamScorers |> List.filter (fun f -> f = name) |> List.length
+    member this.GoalsPerHomePlayer name = this._homeTeamScorers |> Seq.filter (fun f -> f = name) |> Seq.length
+    member this.GoalsPerAwayPlayer name = this._awayTeamScorers |> Seq.filter (fun f -> f = name) |> Seq.length
+
+    //Commands
+    member this.updateMatchStatus matchStatus = 
+        MatchStatusUpdated(Status = EnumEx.MapByStringValue<MatchStatus, FootballMatchStatEventStore.Contracts.MatchStatus>(matchStatus)) |> this.RaiseDomainEvent
+    member this.updateHomeScore scorer = HomeGoalScored(Scorer = scorer) |> this.RaiseDomainEvent
+    member this.updateAwayScore scorer = AwayGoalScored(Scorer = scorer) |> this.RaiseDomainEvent
+
+    //Apply/Mutators
+    member private this.Apply (m:MatchDeclared) = 
+        this._homeTeam <- m.HomeTeam
+        this._awayTeam <- m.AwayTeam
+
+    member private this.Apply (status:MatchStatusUpdated) = 
+        this._matchStatus <- EnumEx.MapByStringValue<FootballMatchStatEventStore.Contracts.MatchStatus, MatchStatus>(status.Status)
+
+    member private this.Apply(goal:HomeGoalScored) =
+        this._homeTeamScorers <- Seq.append this._homeTeamScorers (Seq.singleton goal.Scorer)
+
+    member private this.Apply(goal:AwayGoalScored) =
+        this._awayTeamScorers <- Seq.append this._awayTeamScorers (Seq.singleton goal.Scorer)
+        
 
 module test =
     let m = Match.CreateMatch "" ""

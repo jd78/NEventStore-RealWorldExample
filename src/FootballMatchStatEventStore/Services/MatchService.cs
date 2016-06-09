@@ -6,6 +6,7 @@ using CommonDomain.Persistence;
 using FootballMatchStatEventStore.Contracts;
 using FootballMatchStatEventStore.Domain;
 using NEventStore;
+using Match = FootballMatchStatEventStore.Domain.Match;
 
 namespace FootballMatchStatEventStore.Services
 {
@@ -44,6 +45,35 @@ namespace FootballMatchStatEventStore.Services
             {
                 _store.Advanced.AddSnapshot(new Snapshot(matchCopy.Id.ToString(), matchCopy.Version, MatchMemento.Create(matchCopy)));
             });
+        }
+
+        public Domain.FSharp.Match CreateFSharp(string homeTeam, string awayTeam)
+        {
+            var match = Domain.FSharp.Match.CreateMatch(homeTeam, awayTeam);
+            _repository.Save(match, Guid.NewGuid());
+            return match;
+        }
+
+        public Domain.FSharp.Match ReadFSharp(Guid id)
+        {
+            return _repository.GetById<Domain.FSharp.Match>(id);
+        }
+
+        public void UpdateFsharp(IAggregate match)
+        {
+            //var takeSnapshot = match.GetUncommittedEvents().Cast<IEvent>().Any(p => p.Version > 0 && p.Version % _settings.SnapshotEvery == 0);
+            _repository.Save(match, Guid.NewGuid());
+            //if (!takeSnapshot) return;
+
+            //var matchCopy = ((Match)match).Clone() as IAggregate;
+            //if (matchCopy == null)
+            //{
+            //    throw new ApplicationException("Something wrong while cloning the aggregate");
+            //}
+            //Task.Run(() =>
+            //{
+            //    _store.Advanced.AddSnapshot(new Snapshot(matchCopy.Id.ToString(), matchCopy.Version, MatchMemento.Create(matchCopy)));
+            //});
         }
 
         public Match Read(Guid id)
