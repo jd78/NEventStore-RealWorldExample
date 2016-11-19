@@ -1,4 +1,0 @@
-﻿namespace FootballMatchStatEventStore.Domain.FSharp
-
-
-   

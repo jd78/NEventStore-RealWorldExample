@@ -5,7 +5,6 @@ open FootballMatchStatEventStore.Contracts
 open FootballMatchStatEventStore.Common
 open CommonDomain.Core
 
-
 [<AbstractClass>]
 type DomainBase() =
    inherit AggregateBase()
@@ -73,11 +72,6 @@ type Match =
 
     member private this.Apply(goal:AwayGoalScored) =
         this._awayTeamScorers <- Seq.append this._awayTeamScorers (Seq.singleton goal.Scorer)
-        
-
-module test =
-    let m = Match.CreateMatch "" ""
-    let aa = m.GetHomeTeamScorers
     
     
     
